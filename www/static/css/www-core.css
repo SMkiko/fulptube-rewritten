@@ -118,7 +118,7 @@ body {
 
 .www-home-left {
     float: left;
-    width: calc( 66% - 20px );
+    width: calc( 70% - 20px );
 }
 
 .www-home-right {
@@ -136,7 +136,7 @@ body {
     background: #6a6a6a;
     border-top-left-radius: 5px;
     color: #ededed;
-    width: 200px;
+    width: 179px;
     display: inline-block;
 }
 
@@ -154,7 +154,7 @@ body {
     background: #2b2b2b;
     background-image: linear-gradient(to bottom,#333333 0,#262626 100%);
     color: #fff;
-    width: 384px;
+    width: 444px;
     display: inline-block;
     vertical-align: top;
     position: relative;
@@ -227,6 +227,11 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
+.video-info b a {
+    color: black;
+    text-decoration: none;
+}
+
 .video-timestamp {
     background-color: #000;
     border-radius: 3px;
@@ -241,7 +246,176 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
+.video-item:hover a {
+    color: #1c62b9;
+    text-decoration: underline;
+}
+
 .video-timestamp span {
     color: white;
     opacity: 1;
+}
+
+.featured-left-panel {
+    min-height: 36px;
+    background: #2b2b2b;
+    width: 195px;
+    display: inline-block;
+}
+
+.featured-left-panel-extra {
+    min-height: 36px;
+    background: #2b2b2b;
+    width: 199px;
+    display: inline-block;
+    height: 1374px;
+}
+
+.featured-left-panel ul {
+    margin: 0px;
+    list-style: none;
+    text-align: center;
+    padding: 0px;
+    
+}
+
+.featured-left-panel ul li {
+    color: #999;
+    font-size: 11px;
+    border-right: 4px solid transparent;
+    border-right-color: transparent;
+    cursor: pointer;
+    transition: border .2s ease;
+    line-height: 1.2em;
+    width: 97.5%;
+    border-top: 1px solid #323232;
+    border-bottom: 1px solid #1b1b1b;
+    list-style: none;
+    height: 27px;
+    padding-top: 5px;
+    text-align: left;
+    background-image: linear-gradient(to bottom,#292929 0,#252525 100%);
+    padding-left: 5px;
+}
+
+.featured-left-panel ul li:hover {
+    background: #1c1c1c;
+}
+
+.featured-left-panel ul li img {
+    vertical-align: middle;
+}
+
+.featured-left-panel .active {
+    color: white;
+    border-right-color: #c4302b;
+    background: #1c1c1c;
+}
+
+.featured-left-panel .active img {
+    filter: brightness(3);
+}
+
+.feed-homepage {
+    display: inline-block;
+    position: absolute;
+    top: 128px;
+    width: 432px;
+    padding: 12px;
+
+    /* PLEASE REDESIGN THE FRONT PAGE, THIS IS KIND OF AN UGLY WAY TO DO THIS LAYOUT!!! */
+    background-color: #FFFFFF;
+}
+
+.feed-homepage .video-item {
+    border-bottom: 1px solid #ededed;
+    padding-bottom: 12px;
+    
+}
+
+.feed-homepage .video-item .video-info {
+    line-height: 15px;
+}
+
+.feed-homepage .video-item .video-info p {
+    padding: 0px;
+    margin: 0px;
+}
+
+.feed-homepage .video-item .video-info b {
+    font-size: 117%;
+}
+
+.video-time-ago {
+    font-size: 9px;
+    color: #999;
+    float: right;
+    display: inline-block;
+}
+
+.feed-homepage .video-info {
+    width: 308px;
+}
+
+.www-header-mast {
+    padding-bottom: 32px;
+}
+
+.www-footer {
+    height: 247px;
+}
+
+.www-footer hr {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #fff;
+}
+
+.www-footer img {
+    vertical-align: middle;
+}
+
+.links-footer {
+    float: right;
+    width: 84%;
+    padding-top: 39px;
+}
+
+.links-footer a {
+    color: #666;
+    font-weight: 700;
+    text-decoration: none;
+    margin-right: 25px;
+}
+
+.links-footer a:hover {
+    text-decoration: underline;
+}
+
+.not-bold {
+    font-weight: normal;
+}
+
+.nomargin {
+    margin: 0px;
+}
+
+.login-benifits-span {
+    display: inline-block;
+    margin-top: 14px;
+}
+
+.sign-in-form-box {
+    float: right;
+    width: 235px;
+    background-image: linear-gradient(to bottom,#fafafa 0,#dcdcdc 100%);
+    box-shadow: inset 0 0 1px #fff;
+    padding: 5px;
+    width: 281px;
+}
+
+.profile_pic_mini {
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    margin-left: 5px;
 }
