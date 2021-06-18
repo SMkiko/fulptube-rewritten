@@ -29,6 +29,28 @@ class user_insert_utils {
         $responseData = json_decode(file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$privatekey.'&response='.$response));
         return $responseData->success;
     }
+    
+    function send_message($to, $subject, $message, $owner) {
+        $stmt = $this->conn->prepare("INSERT INTO pms (touser, subject, message, owner) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("ssss", $to, $subject, $message, $owner);
+        $stmt->execute();
+        $stmt->close();
+        return true;
+    }
+
+    function remove_like_video($sender, $reciever) {
+        $stmt = $this->conn->prepare("DELETE FROM likes WHERE sender = ? AND reciever = ?");
+        $stmt->bind_param("ss", $sender, $reciever);
+        $stmt->execute();
+        $stmt->close();
+    }    
+
+    function add_dislike_video($sender, $reciever) {
+        $stmt = $this->conn->prepare("INSERT INTO likes (sender, reciever, type) VALUES (?, ?, 'd')");
+        $stmt->bind_param("ss", $sender, $reciever);
+        $stmt->execute();
+        $stmt->close();
+    }    
 }
 
 /**
@@ -48,5 +70,23 @@ class video_insert_utils {
     function initialize_server_vars($server) {
         $this->server = $server;    
     }
+
+    function check_view($vidid, $user) {
+        $stmt = $this->conn->prepare("SELECT * FROM views WHERE viewer = ? AND videoid = ?");
+        $stmt->bind_param("ss", $user, $vidid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if($result->num_rows === 0) {
+            $this->add_view($vidid, $user);
+        }
+        $stmt->close();
+    }
+    
+    function add_view($vidid, $user) {
+        $stmt = $this->conn->prepare("INSERT INTO views (viewer, videoid) VALUES (?, ?)");
+        $stmt->bind_param("ss", $user, $vidid);
+        $stmt->execute();
+        $stmt->close();
+    }    
 }
 ?>

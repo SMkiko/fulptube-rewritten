@@ -59,6 +59,7 @@ services:
         environment:
             - PMA_HOST=sql
             - PMA_PORT=3306
+            - UPLOAD_LIMIT=300M
         ports:
             - "1337:80"
         container_name: fulpphpmyadmin2
