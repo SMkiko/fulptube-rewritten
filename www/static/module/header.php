@@ -14,5 +14,9 @@
                 <img src="/dynamic/pfp/<?php echo $_user_fetch_utils->fetch_user_pfp($_SESSION['siteusername']); ?>" class="profile_pic_mini">
             </span>
         <?php } ?>
-    </form>
+    </form> 
 </div>
+<?php 
+    if(isset($_SESSION['siteusername']))
+        $_base_utils->update_login_time($_SESSION['siteusername']); 
+?>

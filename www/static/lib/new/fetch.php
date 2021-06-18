@@ -30,7 +30,31 @@ class user_fetch_utils {
             return $user;
 
         $stmt->close();
-    } 
+    }
+
+    function if_subscribed($user, $reciever) {
+        $stmt = $this->conn->prepare("SELECT `reciever` FROM subscribers WHERE sender = ? AND reciever = ?");
+        $stmt->bind_param("ss", $user, $reciever);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        if($result->num_rows === 1) { return true; } else { return false; }
+        $stmt->close();
+        
+        return $user;
+    }
+
+    function if_liked_video($user, $videoid) {
+        $stmt = $this->conn->prepare("SELECT `sender` FROM likes WHERE sender = ? AND reciever = ? AND type = 'l'");
+        $stmt->bind_param("ss", $user, $videoid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
+        if($result->num_rows === 1) { return true; } else { return false; }
+        $stmt->close();
+        
+        return $user;
+    }
 
     function get_unread_pms($username) {
         $stmt = $this->conn->prepare("SELECT * FROM pms WHERE touser = ? AND readed = 'n'");
@@ -103,6 +127,40 @@ class video_fetch_utils {
 
     function initialize_server_vars($server) {
         $this->server = $server;    
+    }
+
+    function get_video_likes($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM likes WHERE reciever = ? AND type = 'l'");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        return $rows;
+    }    
+    
+
+    function get_video_dislikes($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM likes WHERE reciever = ? AND type = 'd'");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        return $rows;
+    }
+
+    function fetch_videos_from_user($user) {
+        $stmt = $this->conn->prepare("SELECT rid FROM videos WHERE author = ? AND visibility = 'v'");
+        $stmt->bind_param("s", $user);
+        $stmt->execute(); 
+        $result = $stmt->get_result();
+        $rows = mysqli_num_rows($result); 
+        $stmt->close();
+    
+        return $rows;
     }
 
     function time_elapsed_string($datetime, $full = false) {
@@ -214,6 +272,19 @@ class video_fetch_utils {
         return $rows;
     }
 
+    function fetch_views_from_user($user) {
+        $stmt = $this->conn->prepare("SELECT `rid` FROM videos WHERE author = ?");
+        $stmt->bind_param("s", $user);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $views = 0;
+        while($row = $result->fetch_assoc()) {
+            $views = $views + $this->fetch_video_views($row['rid']);
+        }
+        return $views;
+        $stmt->close();
+    }
+
     function fetch_user_videos(string $id) {
         $stmt = $this->conn->prepare("SELECT rid FROM videos WHERE author = ? AND visibility = 'v'");
         $stmt->bind_param("s", $id);
@@ -249,5 +320,11 @@ class video_fetch_utils {
             );
         }
     }
+
+    function parseTextNoLink($text) {
+        $text = htmlspecialchars($text);
+        $text = str_replace(PHP_EOL, "<br>", $text);
+        return $text;
+    }    
 }
 ?>

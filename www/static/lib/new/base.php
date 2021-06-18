@@ -35,5 +35,12 @@ class config_setup {
     function return_server_vars() {
         return $this->server;
     }
+
+    function update_login_time($username) {
+        $stmt = $this->conn->prepare("UPDATE users SET lastlogin = now() WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->close();
+    }
 }
 ?> 

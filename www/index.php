@@ -72,24 +72,33 @@
                  
                 </div>
                 <div class="feed-homepage">
-                    <?php for($x=0; $x <= 20; $x++) { ?>
+                    <?php
+                        $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE visibility = 'v' ORDER BY id DESC LIMIT 20");
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+                        while($video = $result->fetch_assoc()) { 
+                    ?> 
                     <div class="video-item">
                         <div class="video-thumbnail r120" 
-                            style="background-image: url('https://cdn.discordapp.com/attachments/832166002385092619/853322753871708170/Untitled-2.png');">
+                        style="background-image: url('/dynamic/thumbs/<?php echo $video['thumbnail']; ?>'), url('/dynamic/thumbs/default.png');">
                             <div class="video-timestamp">
                                 <span>
-                                0:00
+                                <?php echo $_video_fetch_utils->timestamp($video['duration']); ?>
                                 </span>
                             </div>
                         </div>
                         <span class="video-info">
-                            <b><a href="/watch?v=">HOMSTAR</a></b> <span class="video-time-ago">9 days ago</span>
+                            <b><a href="/watch?v=<?php echo $video['rid']; ?>"><?php echo htmlspecialchars($video['title']); ?></a></b> <span class="video-time-ago"><?php echo $_video_fetch_utils->time_elapsed_string($video['publish']); ?></span>
                             <br>
                             <small>
                                 <p>
-                                    description
+                                    <?php echo $_video_fetch_utils->parseTextNoLink($video['description']); ?>
                                 </p>
-                            somebody &bull; 9 views<br>
+                            <a style="color: #555; text-decoration: none;" href="/user/<?php echo htmlspecialchars($video['author']); ?> ">
+                                <?php echo htmlspecialchars($video['author']); ?> 
+                            </a>
+                            &bull; 
+                            <?php echo $_video_fetch_utils->get_video_views($video['rid']); ?> views<br>
                             </small>
                         </span>
                     </div>
@@ -109,20 +118,25 @@
                 <span class="spotlight-text">
                 Featured Content
                 </span><br>
-                <?php for($x=0; $x <= 5; $x++) { ?>
+                <?php
+                    $stmt = $conn->prepare("SELECT rid, title, thumbnail, duration, title, author, publish, description FROM videos WHERE visibility = 'v' AND featured = 'v' ORDER BY id DESC LIMIT 20");
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+                    while($video = $result->fetch_assoc()) { 
+                ?> 
                 <div class="video-item">
                     <div class="video-thumbnail r120" 
-                         style="background-image: url('https://cdn.discordapp.com/attachments/832166002385092619/853322753871708170/Untitled-2.png');">
+                    style="background-image: url('/dynamic/thumbs/<?php echo $video['thumbnail']; ?>'), url('/dynamic/thumbs/default.png');">
                         <div class="video-timestamp">
                             <span>
-                            0:00
+                            <?php echo $_video_fetch_utils->timestamp($video['duration']); ?>
                             </span>
                         </div>
                     </div>
                     <span class="video-info">
-                        <b><a href="/watch?v=">HOMSTAR</a></b><br>
-                        by somebody<br>
-                        9 views
+                        <b><a href="/watch?v=<?php echo htmlspecialchars($video['rid']); ?> "><?php echo htmlspecialchars($video['title']); ?> </a></b><br>
+                        by <?php echo htmlspecialchars($video['author']); ?> <br>
+                        <?php echo $_video_fetch_utils->get_video_views($video['rid']); ?> views
                     </span>
                 </div>
                 <?php } ?>
